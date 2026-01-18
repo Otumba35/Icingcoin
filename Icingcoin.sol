@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract StageCoin is ERC20, Ownable {
+// BEP-20 Token (BSC Compatible)
+contract IcingCoin is ERC20, Ownable {
     uint256 private constant TOTAL_SUPPLY = 2_000_000_000 * 10**18;
     
     uint256 public burnFee = 100;
@@ -21,7 +21,7 @@ contract StageCoin is ERC20, Ownable {
     event TradingEnabled(uint256 timestamp);
     event TokensBurned(address indexed from, uint256 amount);
     
-    constructor() ERC20("Stage Coin", "STG") Ownable(msg.sender) {
+    constructor() ERC20("Icing Coin", "ICG") Ownable(msg.sender) {
         isExcludedFromFees[msg.sender] = true;
         isExcludedFromFees[address(this)] = true;
         
@@ -98,5 +98,10 @@ contract StageCoin is ERC20, Ownable {
     function burn(uint256 amount) external {
         _burn(msg.sender, amount);
         emit TokensBurned(msg.sender, amount);
+    }
+    
+    // BEP-20 specific: Returns the token owner (for BSC compatibility)
+    function getOwner() external view returns (address) {
+        return owner();
     }
 }
